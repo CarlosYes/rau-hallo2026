@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang=pt-PT>
+<head>
+<title>Radio Amigos Unidos</title>
+<meta name="description" content="RAU" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv=X-UA-Compatible content="IE=Edge"/>
+<meta property="og:title" content="RAU Player" />
+<meta property="og:description" content="RAU" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="48x48" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="96x96" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="144x144" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://i.imgur.com/nNh98kV.png" sizes="180x180"/>
+    
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Nosifer', cursive;
+      }
+
+      section {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('https://xatimg.com/image/kRIVPxxKeGcc.jpg') no-repeat center center / 100% 100%, #0b061f;
+      }
+
+      /* --- GIF Central (Atrás da teia, atrás das letras) --- */
+      .central-gif {
+        position: absolute;
+        width: 450px;
+        z-index: 2; 
+        pointer-events: none;
+        display: none;
+        opacity: 0.85;
+      }
+
+      /* --- Bruxa (Aumentada para 350px) --- */
+      .witch {
+        position: absolute;
+        width: 350px;
+        z-index: 10;
+        pointer-events: none;
+        display: none;
+      }
+
+      /* 1. Esquerda Fundo -> Direita Cima */
+      @keyframes witchLeftToRight {
+        0% {
+          left: -350px;
+          top: 80vh;
+          transform: scaleX(-1) scale(0.6);
+        }
+        100% {
+          left: 105vw;
+          top: 5vh;
+          transform: scaleX(-1) scale(1);
+        }
+      }
+
+      /* 2. Direita Fundo -> Esquerda Cima */
+      @keyframes witchRightToLeft {
+        0% {
+          left: 105vw;
+          top: 80vh;
+          transform: scaleX(1) scale(0.6);
+        }
+        100% {
+          left: -350px;
+          top: 5vh;
+          transform: scaleX(1) scale(1);
+        }
+      }
+
+      /* --- Aranha --- */
+      .spider {
+        position: absolute;
+        width: 110px;
+        z-index: 10;
+        pointer-events: none;
+        display: none;
+      }
+
+      /* Percursos da Aranha */
+      @keyframes moveBottomHorizontal {
+        0% { left: -150px; top: calc(100vh - 120px); transform: rotate(0deg); }
+        100% { left: 100vw; top: calc(100vh - 120px); transform: rotate(0deg); }
+      }
+
+      @keyframes moveLeftVertical {
+        0% { left: 10px; top: 100vh; transform: rotate(-90deg); }
+        100% { left: 10px; top: -150px; transform: rotate(-90deg); }
+      }
+
+      @keyframes moveTopHorizontal {
+        0% { left: 100vw; top: 100px; transform: rotate(180deg); }
+        100% { left: -150px; top: 100px; transform: rotate(180deg); }
+      }
+
+      @keyframes moveRightVertical {
+        0% { left: calc(100vw - 120px); top: -150px; transform: rotate(90deg); }
+        100% { left: calc(100vw - 120px); top: 100vh; transform: rotate(90deg); }
+      }
+
+      /* --- Abóboras nas Laterais (Atrás da Teia) --- */
+      .pumpkin {
+        position: absolute;
+        width: 240px;
+        height: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        animation: animatePumpkin 6s ease-in-out infinite;
+        z-index: 2; 
+      }
+
+      .pumpkin01 {
+        left: 50px; 
+      }
+
+      .pumpkin02 {
+        right: 50px; 
+      }
+
+      @keyframes animatePumpkin {
+        0%, 100% {
+          transform: translateY(calc(-50% - 25px));
+        }
+        50% {
+          transform: translateY(calc(-50% + 25px));
+        }
+      }
+
+      /* --- Teia de Aranha --- */
+      .spiderWeb {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        mix-blend-mode: screen;
+        z-index: 3; 
+        pointer-events: none;
+      }
+
+      /* --- Texto Estilo Sangue Profissional --- */
+      .bloody-text-container {
+        position: relative;
+        z-index: 6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 95%;
+      }
+
+      h2 {
+        position: relative;
+        font-size: 3.2vw;
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: 2px;
+        line-height: 1.4;
+        white-space: nowrap;
+        
+        background: linear-gradient(180deg, #ff6b6b 0%, #cc0000 35%, #800000 70%, #300000 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        
+        /* Sem filtros pesados ou caixas externas para evitar o quadrado encarnado */
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.8));
+                
+        animation: bloodBlink 10s infinite linear; 
+      }
+
+      h2 span {
+        display: inline-block;
+        position: relative;
+      }
+
+      /* --- Contentor de Chuva de Sangue --- */
+      .rain-drips-container {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .falling-drop {
+        position: absolute;
+        width: 9px;
+        height: 16px;
+        background: radial-gradient(circle at 35% 35%, #ff4d4d, #b30000 60%, #400000 100%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.9);
+        opacity: 0;
+      }
+
+      @keyframes formAndFall {
+        0% {
+          transform: scale(0.2) translateY(0);
+          opacity: 0;
+        }
+        20% {
+          transform: scale(1) translateY(0); 
+          opacity: 1;
+        }
+        30% {
+          transform: scale(1.1, 0.9) translateY(8px); 
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.8, 1.4) translateY(85vh); 
+          opacity: 0; 
+        }
+      }
+
+      /* Animação limpa apenas baseada na opacidade para piscar o texto sem caixas ou contornos */
+      @keyframes bloodBlink {
+        0%, 85%, 100% {
+          opacity: 1;
+        }
+        88%, 94% {
+          opacity: 0.2;
+        }
+        91%, 97% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+    
+  <body>
+    <section class="banner">
+      <!-- GIF Central (Atrás da Teia) -->
+      <img src="https://i.imgur.com/pqLcSaC.gif" class="central-gif" id="centralGif" alt="GIF Central">
+
+      <!-- Abóboras Laterais (Atrás da Teia) -->
+      <img src="https://xatimg.com/image/FzAJMhNWqoJ4.gif" class="pumpkin pumpkin01" alt="Abóbora Esquerda">
+      <img src="https://xatimg.com/image/Otq5deKBfDUn.gif" class="pumpkin pumpkin02" alt="Abóbora Direita (GIF)">
+
+      <!-- Teia de Aranha -->
+      <img src="https://i.imgur.com/7XIEQS1.png" class="spiderWeb" alt="Teia de aranha">
+
+      <!-- Bruxa Aumentada (350px) -->
+      <img src="https://xatimg.com/image/ZrKneA5UjNoA.png" class="witch" id="witch" alt="Bruxa">
+
+      <div class="bloody-text-container">
+        <h2 id="bloodyTitle">Radio Dos Amigos Unidos</h2>
+      </div>
+
+      <!-- Contentor onde as gotas caem de forma aleatória -->
+      <div class="rain-drips-container" id="rainContainer"></div>
+
+      <!-- Aranha -->
+      <img src="https://i.imgur.com/a7hxkAO.gif" class="spider" id="spider" alt="Aranha">
+    </section>
+
+    <!-- Filtro SVG para Efeito Viscoso/Gooey do Sangue Realista -->
+    <svg width="0" height="0">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="
+            1 0 0 0 0  
+            0 1 0 0 0  
+            0 0 1 0 0  
+            0 0 0 22 -8" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs>
+    </svg>
+
+    <script>
+      // --- Preparação do Texto: Dividir em letras individuais ---
+      const titleElement = document.getElementById('bloodyTitle');
+      const textContent = titleElement.textContent;
+      titleElement.innerHTML = ''; 
+
+      const letterSpans = [];
+      for (let i = 0; i < textContent.length; i++) {
+        const span = document.createElement('span');
+        span.textContent = textContent[i] === ' ' ? '\u00A0' : textContent[i]; 
+        titleElement.appendChild(span);
+        if (textContent[i] !== ' ') {
+          letterSpans.push({ index: i, element: span });
+        }
+      }
+
+      // --- Lógica de Chuva de Sangue Aleatória (Letra sim, letra não, com tempos e atrasos diferentes) ---
+      const rainContainer = document.getElementById('rainContainer');
+
+      function triggerBloodRain() {
+        letterSpans.forEach((item, arrayIndex) => {
+          if (arrayIndex % 2 === 0 && Math.random() > 0.2) { 
+            const rect = item.element.getBoundingClientRect();
+            
+            const drop = document.createElement('div');
+            drop.classList.add('falling-drop');
+
+            const dropX = rect.left + (rect.width / 2) - 4;
+            drop.style.left = dropX + 'px';
+            drop.style.top = (rect.bottom - 5) + 'px';
+
+            const fallDuration = 1.5 + Math.random() * 1.5; 
+            const delayTime = Math.random() * 1.2; 
+
+            drop.style.animation = `formAndFall ${fallDuration}s ease-in forwards`;
+            drop.style.animationDelay = delayTime + 's';
+
+            rainContainer.appendChild(drop);
+
+            setTimeout(() => {
+              drop.remove();
+            }, (fallDuration + delayTime + 0.5) * 1000);
+          }
+        });
+      }
+
+      setTimeout(triggerBloodRain, 1000);
+      setInterval(triggerBloodRain, 5000);
+
+
+      // --- Lógica da Bruxa ---
+      const witch = document.getElementById('witch');
+      const witchAnimations = ['witchLeftToRight', 'witchRightToLeft'];
+      let witchIndex = 0;
+      const witchWalkDuration = 14000;  
+      const witchPauseDuration = 10000; 
+
+      function triggerWitchPass() {
+        witch.style.display = 'block';
+        witch.style.animation = `${witchAnimations[witchIndex]} ${witchWalkDuration / 1000}s linear forwards`;
+
+        setTimeout(() => {
+          witch.style.display = 'none';
+          witch.style.animation = 'none';
+          witchIndex = (witchIndex + 1) % witchAnimations.length;
+          setTimeout(triggerWitchPass, witchPauseDuration);
+        }, witchWalkDuration);
+      }
+
+      setTimeout(() => {
+        triggerWitchPass();
+      }, 10000);
+
+
+      // --- Lógica da Aranha ---
+      const spider = document.getElementById('spider');
+      const spiderAnimations = [
+        'moveBottomHorizontal', 
+        'moveLeftVertical',     
+        'moveTopHorizontal',    
+        'moveRightVertical'     
+      ];
+
+      let spiderIndex = 0;
+      const spiderWalkDuration = 28000;  
+      const spiderPauseDuration = 20000; 
+
+      function triggerSpiderPass() {
+        spider.style.display = 'block';
+        spider.style.animation = `${spiderAnimations[spiderIndex]} ${spiderWalkDuration / 1000}s linear forwards`;
+
+        setTimeout(() => {
+          spider.style.display = 'none';
+          spider.style.animation = 'none';
+          spiderIndex = (spiderIndex + 1) % spiderAnimations.length;
+          setTimeout(triggerSpiderPass, spiderPauseDuration);
+        }, spiderWalkDuration);
+      }
+
+      triggerSpiderPass();
+
+
+      // --- Lógica do GIF Central ---
+      const centralGif = document.getElementById('centralGif');
+      const gifDisplayTime = 3000;   
+      const gifIntervalTime = 5000;  
+
+      function toggleCentralGif() {
+        centralGif.style.display = 'block';
+        setTimeout(() => {
+          centralGif.style.display = 'none';
+        }, gifDisplayTime);
+      }
+
+      setInterval(toggleCentralGif, gifIntervalTime);
+    </script>
+  </body>
+  
+</html>
