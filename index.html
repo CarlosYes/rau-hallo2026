@@ -35,7 +35,6 @@
         background: url('https://xatimg.com/image/kRIVPxxKeGcc.jpg') no-repeat center center / 100% 100%, #0b061f;
       }
 
-      /* --- GIF Central (Atrás da teia, atrás das letras) --- */
       .central-gif {
         position: absolute;
         width: 450px;
@@ -45,7 +44,6 @@
         opacity: 0.85;
       }
 
-      /* --- Bruxa (Aumentada para 350px) --- */
       .witch {
         position: absolute;
         width: 350px;
@@ -54,7 +52,6 @@
         display: none;
       }
 
-      /* 1. Esquerda Fundo -> Direita Cima */
       @keyframes witchLeftToRight {
         0% {
           left: -350px;
@@ -68,7 +65,6 @@
         }
       }
 
-      /* 2. Direita Fundo -> Esquerda Cima */
       @keyframes witchRightToLeft {
         0% {
           left: 105vw;
@@ -82,7 +78,6 @@
         }
       }
 
-      /* --- Aranha --- */
       .spider {
         position: absolute;
         width: 110px;
@@ -91,7 +86,6 @@
         display: none;
       }
 
-      /* Percursos da Aranha */
       @keyframes moveBottomHorizontal {
         0% { left: -150px; top: calc(100vh - 120px); transform: rotate(0deg); }
         100% { left: 100vw; top: calc(100vh - 120px); transform: rotate(0deg); }
@@ -112,7 +106,6 @@
         100% { left: calc(100vw - 120px); top: 100vh; transform: rotate(90deg); }
       }
 
-      /* --- Abóboras nas Laterais (Atrás da Teia) --- */
       .pumpkin {
         position: absolute;
         width: 240px;
@@ -140,7 +133,6 @@
         }
       }
 
-      /* --- Teia de Aranha --- */
       .spiderWeb {
         position: absolute;
         width: 100%;
@@ -151,7 +143,6 @@
         pointer-events: none;
       }
 
-      /* --- Texto Estilo Sangue Profissional --- */
       .bloody-text-container {
         position: relative;
         z-index: 6;
@@ -174,7 +165,6 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         
-        /* Sem filtros pesados ou caixas externas para evitar o quadrado encarnado */
         filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.8));
                 
         animation: bloodBlink 10s infinite linear; 
@@ -185,7 +175,6 @@
         position: relative;
       }
 
-      /* --- Contentor de Chuva de Sangue --- */
       .rain-drips-container {
         position: absolute;
         width: 100%;
@@ -225,7 +214,6 @@
         }
       }
 
-      /* Animação limpa apenas baseada na opacidade para piscar o texto sem caixas ou contornos */
       @keyframes bloodBlink {
         0%, 85%, 100% {
           opacity: 1;
@@ -242,31 +230,24 @@
     
   <body>
     <section class="banner">
-      <!-- GIF Central (Atrás da Teia) -->
       <img src="https://i.imgur.com/pqLcSaC.gif" class="central-gif" id="centralGif" alt="GIF Central">
 
-      <!-- Abóboras Laterais (Atrás da Teia) -->
       <img src="https://xatimg.com/image/FzAJMhNWqoJ4.gif" class="pumpkin pumpkin01" alt="Abóbora Esquerda">
       <img src="https://xatimg.com/image/Otq5deKBfDUn.gif" class="pumpkin pumpkin02" alt="Abóbora Direita (GIF)">
 
-      <!-- Teia de Aranha -->
       <img src="https://i.imgur.com/7XIEQS1.png" class="spiderWeb" alt="Teia de aranha">
 
-      <!-- Bruxa Aumentada (350px) -->
       <img src="https://xatimg.com/image/ZrKneA5UjNoA.png" class="witch" id="witch" alt="Bruxa">
 
       <div class="bloody-text-container">
         <h2 id="bloodyTitle">Radio Dos Amigos Unidos</h2>
       </div>
 
-      <!-- Contentor onde as gotas caem de forma aleatória -->
       <div class="rain-drips-container" id="rainContainer"></div>
 
-      <!-- Aranha -->
       <img src="https://i.imgur.com/a7hxkAO.gif" class="spider" id="spider" alt="Aranha">
     </section>
 
-    <!-- Filtro SVG para Efeito Viscoso/Gooey do Sangue Realista -->
     <svg width="0" height="0">
       <defs>
         <filter id="goo">
@@ -282,7 +263,6 @@
     </svg>
 
     <script>
-      // --- Preparação do Texto: Dividir em letras individuais ---
       const titleElement = document.getElementById('bloodyTitle');
       const textContent = titleElement.textContent;
       titleElement.innerHTML = ''; 
@@ -297,7 +277,6 @@
         }
       }
 
-      // --- Lógica de Chuva de Sangue Aleatória (Letra sim, letra não, com tempos e atrasos diferentes) ---
       const rainContainer = document.getElementById('rainContainer');
 
       function triggerBloodRain() {
@@ -331,7 +310,6 @@
       setInterval(triggerBloodRain, 5000);
 
 
-      // --- Lógica da Bruxa ---
       const witch = document.getElementById('witch');
       const witchAnimations = ['witchLeftToRight', 'witchRightToLeft'];
       let witchIndex = 0;
@@ -355,7 +333,6 @@
       }, 10000);
 
 
-      // --- Lógica da Aranha ---
       const spider = document.getElementById('spider');
       const spiderAnimations = [
         'moveBottomHorizontal', 
@@ -383,7 +360,6 @@
       triggerSpiderPass();
 
 
-      // --- Lógica do GIF Central ---
       const centralGif = document.getElementById('centralGif');
       const gifDisplayTime = 3000;   
       const gifIntervalTime = 5000;  
